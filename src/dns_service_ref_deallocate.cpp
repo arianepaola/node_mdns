@@ -11,7 +11,7 @@ using namespace node;
 namespace node_mdns {
 
 NAN_METHOD(DNSServiceRefDeallocate) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }
@@ -26,7 +26,7 @@ NAN_METHOD(DNSServiceRefDeallocate) {
     DNSServiceRefDeallocate( ref->GetServiceRef());
     ref->SetServiceRef(NULL);
 
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

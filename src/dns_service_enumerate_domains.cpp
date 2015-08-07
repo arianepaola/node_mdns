@@ -13,7 +13,7 @@ DNSSD_API
 OnEnumeration(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex,
         DNSServiceErrorType errorCode, const char * replyDomain, void * context)
 {
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * serviceRef = static_cast<ServiceRef*>(context);
     Handle<Function> callback = serviceRef->GetCallback();
     Handle<Object> this_ = serviceRef->GetThis();
@@ -30,7 +30,7 @@ OnEnumeration(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceInde
 }
 
 NAN_METHOD(DNSServiceEnumerateDomains) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 5)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 5));
     }
@@ -69,7 +69,7 @@ NAN_METHOD(DNSServiceEnumerateDomains) {
     if ( ! serviceRef->SetSocketFlags()) {
         NanReturnValue(throwError("Failed to set socket flags (O_NONBLOCK, FD_CLOEXEC)"));
     }
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

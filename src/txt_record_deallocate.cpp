@@ -9,7 +9,7 @@ using namespace node;
 namespace node_mdns {
 
 NAN_METHOD(TXTRecordDeallocate) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }
@@ -19,7 +19,7 @@ NAN_METHOD(TXTRecordDeallocate) {
 
     TxtRecordRef * ref = ObjectWrap::Unwrap<TxtRecordRef>(args[0]->ToObject());
     TXTRecordDeallocate( & ref->GetTxtRecordRef());
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

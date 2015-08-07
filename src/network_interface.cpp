@@ -22,7 +22,7 @@ using namespace v8;
 namespace node_mdns {
 
 NAN_METHOD(if_nametoindex) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }
@@ -73,7 +73,7 @@ NAN_METHOD(if_nametoindex) {
 }
 
 NAN_METHOD(if_indextoname) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }

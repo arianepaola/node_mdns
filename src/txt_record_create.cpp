@@ -11,7 +11,7 @@ using namespace node;
 namespace node_mdns {
 
 NAN_METHOD(TXTRecordCreate) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 2)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 2));
     }
@@ -32,7 +32,7 @@ NAN_METHOD(TXTRecordCreate) {
 
     TxtRecordRef * ref = ObjectWrap::Unwrap<TxtRecordRef>(args[0]->ToObject());
     TXTRecordCreate( & ref->GetTxtRecordRef(), buffer_length, buffer);
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

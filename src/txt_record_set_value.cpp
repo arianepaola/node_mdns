@@ -21,7 +21,7 @@ size_t length(Handle<Value> v) {
 }
 
 NAN_METHOD(TXTRecordSetValue) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 3)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 3));
     }
@@ -47,7 +47,7 @@ NAN_METHOD(TXTRecordSetValue) {
     if (code != kDNSServiceErr_NoError) {
         NanReturnValue(throwMdnsError(code));
     }
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

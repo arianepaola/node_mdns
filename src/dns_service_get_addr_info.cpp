@@ -27,7 +27,7 @@ OnAddressInfo(DNSServiceRef sdRef, DNSServiceFlags flags,
 {
     if ( ! context) return;
 
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * serviceRef = static_cast<ServiceRef*>(context);
     Handle<Function> callback = serviceRef->GetCallback();
     Handle<Object> this_ = serviceRef->GetThis();
@@ -69,7 +69,7 @@ OnAddressInfo(DNSServiceRef sdRef, DNSServiceFlags flags,
 }
 
 NAN_METHOD(DNSServiceGetAddrInfo) {
-    NanScope();
+    Nan::HandleScope scope;
 
     if (argumentCountMismatch(args, 7)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 7));
@@ -122,7 +122,7 @@ NAN_METHOD(DNSServiceGetAddrInfo) {
         NanReturnValue(throwError("Failed to set socket flags (O_NONBLOCK, FD_CLOEXEC)"));
     }
 
-    NanReturnUndefined();
+    return;
 }
 
 #endif // HAVE_DNSSERVICEGETADDRINFO

@@ -11,7 +11,7 @@ using namespace node;
 namespace node_mdns {
 
 NAN_METHOD(DNSServiceProcessResult) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }
@@ -25,7 +25,7 @@ NAN_METHOD(DNSServiceProcessResult) {
     if (error != kDNSServiceErr_NoError) {
         NanReturnValue(throwMdnsError(error));
     }
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

@@ -38,7 +38,7 @@ ServiceRef::Initialize(Handle<Object> target) {
 }
 
 NAN_METHOD(ServiceRef::New) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 0)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 0));
     }
@@ -103,14 +103,14 @@ ServiceRef::SetSocketFlags() {
 }
 
 NAN_PROPERTY_GETTER(ServiceRef::fd_getter) {
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * service_ref = ObjectWrap::Unwrap<ServiceRef>(args.This());
     int fd = -1;
     if (service_ref->ref_) {
         fd = DNSServiceRefSockFD(service_ref->ref_);
         if (fd == -1) {
             NanThrowError("DNSServiceRefSockFD() failed");
-            NanReturnUndefined();
+            return;
         }
     }
     Local<Integer> v = NanNew<Integer>(fd);
@@ -118,7 +118,7 @@ NAN_PROPERTY_GETTER(ServiceRef::fd_getter) {
 }
 
 NAN_PROPERTY_GETTER(ServiceRef::initialized_getter) {
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * service_ref = ObjectWrap::Unwrap<ServiceRef>(args.This());
     NanReturnValue(NanNew<Boolean>(service_ref->IsInitialized()));
 }

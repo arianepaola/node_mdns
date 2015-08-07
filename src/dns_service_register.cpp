@@ -26,7 +26,7 @@ OnServiceRegistered(DNSServiceRef sdRef, DNSServiceFlags flags,
 {
     if ( ! context) return;
 
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * serviceRef = static_cast<ServiceRef*>(context);
     Handle<Function> callback = serviceRef->GetCallback();
     Handle<Object> this_ = serviceRef->GetThis();
@@ -50,7 +50,7 @@ OnServiceRegistered(DNSServiceRef sdRef, DNSServiceFlags flags,
 }
 
 NAN_METHOD(DNSServiceRegister) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 11)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 11));
     }
@@ -161,7 +161,7 @@ NAN_METHOD(DNSServiceRegister) {
     if ( ! serviceRef->SetSocketFlags()) {
         NanReturnValue(throwError("Failed to set socket flags (O_NONBLOCK, FD_CLOEXEC)"));
     }
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

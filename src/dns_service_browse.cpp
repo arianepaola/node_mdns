@@ -17,7 +17,7 @@ OnServiceChanged(DNSServiceRef sdRef, DNSServiceFlags flags,
         const char * serviceName, const char * serviceType,
         const char * replyDomain, void * context)
 {
-    NanScope();
+    Nan::HandleScope scope;
     ServiceRef * serviceRef = static_cast<ServiceRef*>(context);
     Handle<Function> callback = serviceRef->GetCallback();
     Handle<Object> this_ = serviceRef->GetThis();
@@ -40,7 +40,7 @@ OnServiceChanged(DNSServiceRef sdRef, DNSServiceFlags flags,
 }
 
 NAN_METHOD(DNSServiceBrowse) {
-    NanScope(); 
+    Nan::HandleScope scope; 
     if (argumentCountMismatch(args, 7)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 7));
     }
@@ -98,7 +98,7 @@ NAN_METHOD(DNSServiceBrowse) {
         NanReturnValue(throwError("Failed to set socket flags (O_NONBLOCK, FD_CLOEXEC)"));
     }
 
-    NanReturnUndefined();
+    return;
 }
 
 } // end of namespace node_mdns

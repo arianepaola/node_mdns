@@ -11,7 +11,7 @@ using namespace node;
 namespace node_mdns {
 
 NAN_METHOD(DNSServiceRefSockFD) {
-    NanScope();
+    Nan::HandleScope scope;
     if (argumentCountMismatch(args, 1)) {
         NanReturnValue(throwArgumentCountMismatchException(args, 1));
     }

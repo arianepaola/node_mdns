@@ -12,6 +12,8 @@
 using namespace v8;
 using namespace node;
 
+using namespace Nan;
+
 namespace node_mdns {
 
 // === dns_sd ===========================================
@@ -44,13 +46,12 @@ NAN_METHOD(buildException);
 
 // === locals ===========================================
 
-void defineFunction(Handle<Object> target, const char * name, NanFunctionCallback f);
+void defineFunction(Handle<Object> target, const char * name, Nan::FunctionCallback f);
 void addConstants(Handle<Object> target);
 
 void
 init(Handle<Object> target) {
-    NanScope();
-
+    Nan::HandleScope scope;
     ServiceRef::Initialize( target );
     TxtRecordRef::Initialize( target );
 #ifdef NODE_MDNS_USE_SOCKET_WATCHER
@@ -88,23 +89,23 @@ init(Handle<Object> target) {
 
 inline
 void
-defineFunction(Handle<Object> target, const char * name, NanFunctionCallback f) {
-    target->Set(NanNew(name),
-            NanNew<FunctionTemplate>(f)->GetFunction());
+defineFunction(Handle<Object> target, const char * name, Nan::FunctionCallback f) {
+    target->Set(Nan::New(name),
+            Nan::New<FunctionTemplate>(f)->GetFunction());
 }
 
 NAN_METHOD(buildException) {
-    NanScope();
-    if (argumentCountMismatch(args, 1)) {
-        NanReturnValue(throwArgumentCountMismatchException(args, 1));
+    Nan::HandleScope scope;
+    if (argumentCountMismatch(info, 1)) {
+        info.GetReturnValue().Set(throwArgumentCountMismatchException(info, 1));
     }
-    if ( ! args[0]->IsInt32()) {
-        NanReturnValue(throwTypeError("argument 1 must be an integer " 
+    if ( ! info[0]->IsInt32()) {
+        info.GetReturnValue().Set(throwTypeError("argument 1 must be an integer " 
                 "(DNSServiceErrorType)"));
     }
 
-    DNSServiceErrorType error = args[0]->Int32Value();
-    NanReturnValue(buildException(error));
+    DNSServiceErrorType error = info[0]->Int32Value();
+    info.GetReturnValue().Set(buildException(error));
 }
 
 void
@@ -303,16 +304,16 @@ addConstants(Handle<Object> target) {
 }
 
 NAN_METHOD(exportConstants) {
-    NanScope();
-    if (argumentCountMismatch(args, 1)) {
-        NanReturnValue(throwArgumentCountMismatchException(args, 1));
+    Nan::HandleScope scope;
+    if (argumentCountMismatch(info, 1)) {
+        info.GetReturnValue().Set(throwArgumentCountMismatchException(info, 1));
     }
-    if ( ! args[0]->IsObject()) {
-        NanReturnValue(throwTypeError("argument 1 must be an object."));
+    if ( ! info[0]->IsObject()) {
+        info.GetReturnValue().Set(throwTypeError("argument 1 must be an object."));
     }
 
-    addConstants(args[0]->ToObject());
-    NanReturnUndefined();
+    addConstants(info[0]->ToObject());
+    return;
 }
 
 } // end of namespace node_mdns

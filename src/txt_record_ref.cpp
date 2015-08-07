@@ -29,7 +29,7 @@ TxtRecordRef::Initialize(Handle<Object> target) {
 }
 
 NAN_METHOD(TxtRecordRef::New) {
-    NanScope();
+    Nan::HandleScope scope;
     TxtRecordRef * o = new TxtRecordRef();
     o->Wrap(args.Holder());
     NanReturnValue(args.This());

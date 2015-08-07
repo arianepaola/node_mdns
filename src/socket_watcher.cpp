@@ -18,7 +18,7 @@ Handle<Value>
 MakeCallback(const Handle<Object> object, const Handle<Function> callback,
         int argc, Handle<Value> argv[])
 {
-    NanScope();
+    Nan::HandleScope scope;
 
     // TODO Hook for long stack traces to be made here.
 
@@ -28,7 +28,7 @@ MakeCallback(const Handle<Object> object, const Handle<Function> callback,
 
     if (try_catch.HasCaught()) {
         FatalException(try_catch);
-        NanReturnUndefined();
+        return;
     }
 
     NanReturnValue(ret);
@@ -58,10 +58,10 @@ namespace node_mdns {
     }
 
     NAN_METHOD(SocketWatcher::Start) {
-        NanScope();
+        Nan::HandleScope scope;
         SocketWatcher *watcher = ObjectWrap::Unwrap<SocketWatcher>(args.Holder());
         watcher->Start();
-        NanReturnUndefined();
+        return;
     }
 
     void
@@ -82,7 +82,7 @@ namespace node_mdns {
 
     void
     SocketWatcher::Callback(uv_poll_t *w, int status, int revents) {
-        NanScope();
+        Nan::HandleScope scope;
 
         SocketWatcher *watcher = static_cast<SocketWatcher*>(w->data);
         assert(w == watcher->poll_);
@@ -103,10 +103,10 @@ namespace node_mdns {
     }
 
     NAN_METHOD(SocketWatcher::Stop) {
-        NanScope();
+        Nan::HandleScope scope;
         SocketWatcher *watcher = ObjectWrap::Unwrap<SocketWatcher>(args.Holder());
         watcher->Stop();
-        NanReturnUndefined();
+        return;
     }
 
     void
@@ -118,23 +118,23 @@ namespace node_mdns {
     }
 
     NAN_METHOD(SocketWatcher::New) {
-        NanScope();
+        Nan::HandleScope scope;
         SocketWatcher *s = new SocketWatcher();
         s->Wrap(args.This());
         NanReturnValue(args.This());
     }
 
     NAN_METHOD(SocketWatcher::Set) {
-        NanScope();
+        Nan::HandleScope scope;
         SocketWatcher *watcher = ObjectWrap::Unwrap<SocketWatcher>(args.Holder());
         if (!args[0]->IsInt32()) {
             NanThrowTypeError("First arg should be a file descriptor.");
-            NanReturnUndefined();
+            return;
         }
         int fd = args[0]->Int32Value();
         if (!args[1]->IsBoolean()) {
             NanThrowTypeError("Second arg should be a boolean (readable).");
-            NanReturnUndefined();
+            return;
         }
         int events = 0;
 
@@ -142,7 +142,7 @@ namespace node_mdns {
 
         if (!args[2]->IsBoolean()) {
             NanThrowTypeError("Third arg should be a boolean (writable).");
-            NanReturnUndefined();
+            return;
         }
 
         if (args[2]->IsTrue()) events |= UV_WRITABLE;
@@ -152,7 +152,7 @@ namespace node_mdns {
         watcher->fd_ = fd;
         watcher->events_ = events;
 
-        NanReturnUndefined();
+        return;
     }
 
 } // end of namespace node_mdns
